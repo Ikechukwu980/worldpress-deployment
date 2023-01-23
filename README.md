@@ -1,11 +1,13 @@
 ### creating a 3 tier networking architecture for a wordpress website ###
-# STEP 1, CREATE A VPC WITH. 
+# STEP 1, CREATE A VPC WITH.
+
   Cidr_block            = 10.0.0.0/16
   Enable_dns_hostnames  = true
   Enable_dns_support    = true
   Tags                  = practice-vpc
 
 # STEP 2, CREATE 6 SUBNETS, 2 PUBLIC AND 4 PRIVATE.
+
  - Public subnets for web server
    VPC_ID                  = practice-vpc
    Cidr_blocks             = [10.0.0.0/24, 10.0.1.0/24]
@@ -26,6 +28,7 @@
    Tags                    = [private-db-subnet-AZ1, private-db-subnet-AZ2]
 
 # STEP 3, CREATE AN INTERNET GATEWAY AND ATTACH TO THE ABOVE VPC.
+
    Vpc_id  = practice-vpc
    Tags    = practice-igw
 
