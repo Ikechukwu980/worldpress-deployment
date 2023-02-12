@@ -120,7 +120,7 @@
            initial database name:Application-db
        - Click create.
 
-# STEP 9, CREATE AN ELSTIC FILE SYSTEM.
+# STEP 9, CREATE AN ELASTIC FILE SYSTEM.
    1. Navigate to EFS service in th console
       - click create file system and click customize
       - Name: practice-EFS
