@@ -1,68 +1,68 @@
 ### creating a 3 tier networking architecture for a wordpress website ###
 # STEP 1, CREATE A VPC WITH.
 
-  Cidr_block            = 10.0.0.0/16
-  Enable_dns_hostnames  = true
-  Enable_dns_support    = true
-  Tags                  = practice-vpc
+    Cidr_block            = 10.0.0.0/16
+    Enable_dns_hostnames  = true
+    Enable_dns_support    = true
+    Tags                  = practice-vpc
 
 # STEP 2, CREATE 6 SUBNETS, 2 PUBLIC AND 4 PRIVATE.
 
- - Public subnets for web server
-   VPC_ID                  = practice-vpc
-   Cidr_blocks             = [10.0.0.0/24, 10.0.1.0/24]
-   Availability_zones      = [us-east-1a ,us-east-1b]
-   Map_public_ip_on_launch = true
-   Tags                    = [public-web-subnet-AZ1, public-web-subnet-AZ2]
+    - Public subnets for web server
+     VPC_ID                  = practice-vpc
+     Cidr_blocks             = [10.0.0.0/24, 10.0.1.0/24]
+     Availability_zones      = [us-east-1a ,us-east-1b]
+     Map_public_ip_on_launch = true
+     Tags                    = [public-web-subnet-AZ1, public-web-subnet-AZ2]
 
- - Private subnets for APP server
-   VPC_id                  = practice-vpc
-   Cidr_blocks             = [10.0.3.0/24, 10.0.4.0/28]
-   Availability_zones      = [us-east-1a ,us-east-1b]
-   Tags                    = [private-app-subnet-AZ1, private-app-subnet-AZ2]
+    - Private subnets for APP server
+      VPC_id                  = practice-vpc
+      Cidr_blocks             = [10.0.3.0/24, 10.0.4.0/28]
+      Availability_zones      = [us-east-1a ,us-east-1b]
+      Tags                    = [private-app-subnet-AZ1, private-app-subnet-AZ2]
 
- - Private subnets for database server
-   VPC_id                  = practice-vpc
-   Cidr_blocks             = [10.0.2.0/24, 10.0.5.0/28]
-   Availability_zones      = [us-east-1a ,us-east-1b]
-   Tags                    = [private-db-subnet-AZ1, private-db-subnet-AZ2]
+    - Private subnets for database server
+      VPC_id                  = practice-vpc
+      Cidr_blocks             = [10.0.2.0/24, 10.0.5.0/28]
+      Availability_zones      = [us-east-1a ,us-east-1b]
+      Tags                    = [private-db-subnet-AZ1, private-db-subnet-AZ2]
 
 # STEP 3, CREATE AN INTERNET GATEWAY AND ATTACH TO THE ABOVE VPC.
 
-   Vpc_id  = practice-vpc
-   Tags    = practice-igw
+    Vpc_id  = practice-vpc
+    Tags    = practice-igw
 
 # STEP 4, CREATE 2 NAT GATEWAY IN THE PUBLIC SUBNETS [AZI & AZ2].
-   - Select allocate elastic ip address and add it to the private 
-     route tables
+    - Select allocate elastic ip address and add it to the private 
+      route tables
 
 # STEP 5, CREATE 3 ROUTE TABLES, 1 PUBLIC AND 2 PRIVATE ROUTE TABLES.
-  1. Public route table for web subnets.
+    1. Public route table for web subnets.
 
-   - Vpc_id        = practice-vpc
-   - Route         =
+    - Vpc_id        = practice-vpc
+    - Route         =
       Destination = 0.0.0.0/0
       Target      = practice-igw
-   - Tags          = public-RT
+     - Tags          = public-RT
 
   NOTE: Associate the 2 public-web-subnets to the public route table 
 
- 2. Private route table  AZ1
-   - Vpc_id        = practice-vpc
-   - Route         =
+    2. Private route table  AZ1
+    - Vpc_id        = practice-vpc
+    - Route         =
       Destination = 0.0.0.0/0
       Target      = NAT Gateway-AZ1
-   - Tags          = pri-RT-AZ1
-
+    - Tags          = pri-RT-AZ1
+ 
   NOTE:Associate the  pri-DB-sn1 and the pri-app-sn1 to the private route
   table AZ1
 
-  3. Private route table AZ2
-   - Vpc_id        = practice-vpc
-   - Route         =
+    3. Private route table AZ2
+    - Vpc_id        = practice-vpc
+    - Route         =
       Destination = 0.0.0.0/0
       Target      = NAT Gateway-AZ2
-   - Tags          = pri-RT-AZ2
+    - Tags          = pri-RT-AZ2
 
   NOTE:Associate the  pri-DB-sn2 and the pri-app-sn2 to the private route table AZ2
 
